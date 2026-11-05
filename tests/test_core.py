@@ -36,6 +36,12 @@ class CoreTests(unittest.TestCase):
         self.assertEqual(config.style_for(self.cfg,'Firefox','Other')['texture'],'checker')
         self.assertEqual(config.style_for(self.cfg,'Terminal','WORK')['texture'],'random')
 
+    def test_solid_presets_render_as_flat_colour(self):
+        for texture in ('red', 'orange', 'yellow', 'green', 'gray', 'blue', 'purple', 'black'):
+            for stitch in (1, 5, 12):
+                tile = self.registry.tile(texture, 'random', stitch)
+                self.assertEqual(tile.size, (1, 1), f'{texture} stitch={stitch}')
+
     def test_validation_rejects_invalid_inputs(self):
         cases=[{'width':True},{'width':100},{'stitch':0},{'enabled':1},{'color':'red'}, {'texture':'missing'},
                {'texture':[]},{'seed':-1},{'inactive_opacity':float('nan')},{'rules':[{}]}, {'rules':[{'wm_class':4}]}, {'unknown':1}]
