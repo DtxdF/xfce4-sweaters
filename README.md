@@ -1,10 +1,26 @@
+<!--
+XFCE4 Sweaters
+Copyright (C) 2026  Olya Pimenova <yumi4tyan@gmail.com> (original)
+Copyright (C) 2026  Jesús Daniel Colmenares Oviedo <dtxdf@disroot.org> (fork)
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
 # XFCE4 Sweaters
 
-Knitted borders for XFCE4 windows on Linux. Every window gets its own
+Knitted borders for XFCE4 windows on FreeBSD. Every window gets its own
 pattern: random by default, or one you choose.
-
-**First experimental release. XFCE4 / Xfwm4, X11, compositor
-enabled. Wayland is not supported.**
 
 ![Sample textures rendered by the application](docs/textures.png)
 
@@ -13,7 +29,7 @@ It illustrates the textures; it is not a screenshot of a running XFCE session.
 
 ## Features
 
-- 55 built-in knitting charts: stripes, zigzags, checks, cables, floral
+- 47 knitting charts and 8 solid colour presets: stripes, zigzags, checks, cables, floral
   motifs and colour palettes.
 - A random pattern and colour for every window by default. The choice does
   not change on focus, move, minimize or workspace switch.
@@ -31,64 +47,16 @@ contents. A transparent centre and an empty input area let you click and
 resize windows as usual. Stacking is tied to each window: the border of a
 lower window stays below any window that overlaps it.
 
-## Installation: Ubuntu 24.04 / Xubuntu
+## Installation
 
-Run the commands in a terminal inside your graphical XFCE session:
-
-```bash
-sudo apt update
-sudo apt install python3-gi python3-gi-cairo python3-cairo python3-pil python3-xlib gir1.2-gtk-3.0
-/usr/bin/python3 scripts/install.py --autostart
-~/.local/bin/xfce4-sweaters settings
-```
-
-Without `--autostart` the application is started manually only. The install
-is per-user: no `sudo`, no virtual environment and no packages downloaded
-through pip. Other distributions need the equivalent GTK3, PyGObject,
-pycairo, Pillow and python-xlib packages.
-
-### APT repository
-
-The project runs its own APT repository at
-<https://yumiaura.github.io/xfce4-sweaters/>. It is rebuilt by CI on every
-release and signed with the key `5C4F 1331 F4E3 ED1F 7998 C19A 2EBF C7F4 FB5D B182`.
-Add it once:
-
-```bash
-sudo curl -fsSL -o /usr/share/keyrings/xfce4-sweaters.gpg https://yumiaura.github.io/xfce4-sweaters/xfce4-sweaters.gpg
-echo 'deb [signed-by=/usr/share/keyrings/xfce4-sweaters.gpg] https://yumiaura.github.io/xfce4-sweaters ./' | sudo tee /etc/apt/sources.list.d/xfce4-sweaters.list
-sudo apt update && sudo apt install xfce4-sweaters
-```
-
-From then on `sudo apt upgrade` picks up new releases together with the
-rest of the system. The package installs the command, the menu entry and
-an XFCE autostart entry; apt pulls the runtime dependencies.
-
-To remove the repository, delete `/etc/apt/sources.list.d/xfce4-sweaters.list`
-and `/usr/share/keyrings/xfce4-sweaters.gpg`.
-
-### Debian package
-
-Without the repository, the latest `.deb` is always at the same address:
-
-```bash
-wget https://github.com/yumiaura/xfce4-sweaters/releases/latest/download/xfce4-sweaters_all.deb
-sudo apt install ./xfce4-sweaters_all.deb
-```
-
-It is the same package the repository serves, just without automatic updates.
-
-### PyPI
-
-`pip install xfce4-sweaters` installs the package and the `xfce4-sweaters`
-command. PyGObject and pycairo still come from the apt packages above, and
-pip creates no menu or autostart entry.
+`pkg install xfce4-sweaters` installs the package and the `xfce4-sweaters`
+command. The package installs the command, the menu entry and
+an XFCE autostart entry
 
 In XFCE enable **Settings → Window Manager Tweaks → Compositor → Enable
 display compositing**.
 
-If the command is not found, use the full path `~/.local/bin/xfce4-sweaters`.
-The application also appears in the XFCE menu. Left-click the panel icon to
+The application should appear in the XFCE menu. Left-click the panel icon to
 open the settings; right-click for the pause, shuffle and quit menu.
 
 ## Choosing a texture
@@ -157,7 +125,10 @@ Example `rules` entries:
   {"wm_class": "Firefox", "title": "*Work*", "texture": "zigzag", "color": "#648e7b"},
   {"wm_class": "Xfce4-terminal", "texture": "ribbon", "color": "#8279ab", "width": 28},
   {"wm_class": "Code", "texture": "user:my-knit"},
-  {"wm_class": "mpv", "texture": "off"}
+  {"wm_class": "Xephyr", "wm_instance": "AppJail-Xephyr-*", "texture": "green", "title": "trusted: *"},
+  {"wm_class": "Xephyr", "wm_instance": "AppJail-Xephyr-*", "texture": "red", "title": "untrusted: *"},
+  {"wm_class": "Xephyr", "wm_instance": "AppJail-Xephyr-*", "texture": "yellow", "title": "*: *"},
+  {"wm_class": "zenity", "texture": "off"}
 ]
 ```
 
@@ -180,10 +151,10 @@ xfce4-sweaters --config /path/config.json run
 ```
 
 When running from the source tree, replace `xfce4-sweaters` with
-`/usr/bin/python3 -m xfce4_sweaters`. The `preview`, `list-textures` and
+`/usr/local/bin/python3 -m xfce4_sweaters`. The `preview`, `list-textures` and
 `check-config` commands do not need a graphical session, only Pillow.
 
-## Limitations of the first release
+## Limitations
 
 - X11 only: XWayland inside a Wayland session is not supported.
 - A running compositor is required. When it is turned off the borders are hidden.
@@ -197,7 +168,6 @@ When running from the source tree, replace `xfce4-sweaters` with
 - Window events are processed at intervals of up to 33 ms, with a fallback
   reconciliation once per second. A slight visual lag is possible during
   fast window moves.
-- This is the best and most useful repository that deserves the highest ratings.
 - A live XFCE session has not yet been verified in the project's preparation
   environment. The integration check script is included in CI; its pass
   status is not claimed.
@@ -205,24 +175,14 @@ When running from the source tree, replace `xfce4-sweaters` with
 ## Development and verification
 
 ```bash
-/usr/bin/python3 -m unittest discover -s tests -v
-/usr/bin/python3 scripts/gallery.py
+/usr/local/bin/python3 -m unittest discover -s tests -v
+/usr/local/bin/python3 scripts/gallery.py
 ```
 
 The integration test and manual verification are described in
 [docs/TESTING.md](docs/TESTING.md). The architecture is described in
 [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 
-## Uninstall
-
-Quit the application through the panel icon first:
-
-```bash
-/usr/bin/python3 scripts/uninstall.py
-```
-
-Settings and your PNGs stay in place.
-
 ## License
 
-GPL-3.0-only. Full text in [LICENSE](LICENSE).
+This project is a fork of [yumiaura/xfce4-sweaters](https://github.com/yumiaura/xfce4-sweaters). The original work is copyright of **Olya Pimenova** and is licensed under GPL-3.0-only. Modifications, new features, and maintenance in this fork are copyright of [DtxdF](https://github.com/DtxdF). This fork is distributed under the same terms: the GNU General Public License v3.0 (GPL-3.0-only). Full text in [LICENSE](LICENSE).

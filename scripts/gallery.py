@@ -1,4 +1,21 @@
 #!/usr/bin/env python3
+# XFCE4 Sweaters
+# Copyright (C) 2026  Olya Pimenova <yumi4tyan@gmail.com> (original)
+# Copyright (C) 2026  Jesús Daniel Colmenares Oviedo <dtxdf@disroot.org> (fork)
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 """Render the actual software textures for documentation (no desktop required)."""
 import sys
 from pathlib import Path
@@ -10,12 +27,12 @@ from xfce4_sweaters.textures import Registry,border
 # theme_bg_color for the body, white title text and white button glyphs on the
 # right (minimize, maximize, close), as in the theme's normal button state.
 TITLE_BAR='#6a3043'; BODY='#5a2939'; TITLE_TEXT='#ffffff'; BODY_TEXT='#ece7ee'
-REPOSITORY='https://github.com/yumiaura/xfce4-sweaters'
+REPOSITORY='https://github.com/DtxdF/xfce4-sweaters'
 
 registry=Registry()
 canvas=Image.new('RGB',(1440,1000),'#1e1b21')
 draw=ImageDraw.Draw(canvas)
-font_path='/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf'
+font_path='/usr/local/share/fonts/dejavu/DejaVuSans.ttf'
 try:
     heading=ImageFont.truetype(font_path,42); label=ImageFont.truetype(font_path,21); small=ImageFont.truetype(font_path,15)
 except OSError:
