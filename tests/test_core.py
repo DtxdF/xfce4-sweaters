@@ -11,7 +11,7 @@ class CoreTests(unittest.TestCase):
         self.cfg=config.validate({},self.registry.ids)
 
     def test_all_imported_patterns_are_rectangular_and_renderable(self):
-        self.assertEqual(len(self.registry.ids),47)
+        self.assertEqual(len(self.registry.ids),55)
         for name,spec in self.registry.specs.items():
             with self.subTest(pattern=name):
                 self.assertTrue(all(len(r)==len(spec['rows'][0]) for r in spec['rows']))
@@ -31,10 +31,14 @@ class CoreTests(unittest.TestCase):
         self.assertEqual(self.registry.resolve(style,'42',0),self.registry.resolve(style,'42',123))
 
     def test_first_matching_rule_and_title_filter(self):
-        self.cfg['rules']=[{'wm_class':'firefox','title':'*Work*','texture':'twinkle'}, {'wm_class':'Fire*','texture':'checker'}]
-        self.assertEqual(config.style_for(self.cfg,'Firefox','WORK tab')['texture'],'twinkle')
-        self.assertEqual(config.style_for(self.cfg,'Firefox','Other')['texture'],'checker')
-        self.assertEqual(config.style_for(self.cfg,'Terminal','WORK')['texture'],'random')
+        self.cfg['rules']=[
+            {'wm_class':'firefox','title':'*Work*','texture':'twinkle'},
+            {'wm_class':'Fire*','texture':'checker'},
+            {'wm_class':'Xephyr','wm_instance':'AppJail-Xephyr-*','title':'untrusted: *','texture':'red'}]
+        self.assertEqual(config.style_for(self.cfg,'Firefox','','WORK tab')['texture'],'twinkle')
+        self.assertEqual(config.style_for(self.cfg,'Firefox','','Other')['texture'],'checker')
+        self.assertEqual(config.style_for(self.cfg,'Xephyr','AppJail-Xephyr-1001','untrusted: Firefox')['texture'],'red')
+        self.assertEqual(config.style_for(self.cfg,'Terminal','','WORK')['texture'],'random')
 
     def test_solid_presets_render_as_flat_colour(self):
         for texture in ('red', 'orange', 'yellow', 'green', 'gray', 'blue', 'purple', 'black'):
