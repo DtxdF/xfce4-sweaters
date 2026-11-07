@@ -3,6 +3,6 @@ Type=Application
 Name=XFCE4 Sweaters
 Comment=Knitted window borders
 Exec=xfce4-sweaters settings
-Icon=preferences-desktop-theme
+Icon=xfce4-sweaters
 Terminal=false
 Categories=Settings;DesktopSettings;

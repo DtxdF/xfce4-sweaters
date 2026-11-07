@@ -113,7 +113,7 @@ class Controller:
         self.last_config_check = 0
         self.failed = False
         self.last_config_stamp = self.stamp()
-        self.tray = Gtk.StatusIcon.new_from_icon_name('preferences-desktop-theme')
+        self.tray = Gtk.StatusIcon.new_from_icon_name('xfce4-sweaters')
         self.tray.set_tooltip_text('XFCE4 Sweaters: click for settings')
         self.tray.connect('activate',lambda *_: self.open_settings())
         self.tray.connect('popup-menu',self.popup)
